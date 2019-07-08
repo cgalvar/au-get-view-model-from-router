@@ -1,0 +1,1 @@
+export * from './helpers/au-get-view-model-from-router';
