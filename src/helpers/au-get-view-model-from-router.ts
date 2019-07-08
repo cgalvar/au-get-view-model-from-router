@@ -16,17 +16,27 @@ export class GetViewModelFromRouter{
         else{
             console.log('component not found, maybe it has not been attached yet');
             return new Promise((next, reject)=>{
-    
-                setTimeout(() => {
+                
+                let times = 0;
+
+                let intervalId = setInterval(() => {
                     //@ts-ignore
                     if(this.router.container.viewModel[viewModelRef]){
+                        clearInterval(intervalId);
                         //@ts-ignore
-                         next(this.router.container.viewModel[viewModelRef]);
+                        next(this.router.container.viewModel[viewModelRef]);
                     }
-                    else
-                        reject('Component not found');
+                    else{
+                        times++;
+                        if (times == 3) {
+                            clearInterval(intervalId);
+                            reject('Component not found');
+                        }
+                    }
                    
                 }, 50);
+
+                
             })
         }
 
